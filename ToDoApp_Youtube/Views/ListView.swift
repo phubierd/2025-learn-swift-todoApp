@@ -9,17 +9,20 @@ import SwiftUI
 
 struct ListView: View {
     
-    @State var items:[String] = [
-        "this is the first title!",
-        "This is the second",
-        "third!"
-    ]
+    @Environment(ListViewModel.self) var listViewModel
     
     var body: some View {
         List{
-            ForEach(items,id:\.self){item in
-                ListRowView(title: item)
+            ForEach(listViewModel.items){item in
+                ListRowView(item:item)
+                    .onTapGesture {
+                        withAnimation(.linear) {
+                            listViewModel.updateItem(item: item)
+                        }
+                    }
             }
+            .onDelete(perform: listViewModel.deleteItem)
+            .onMove(perform: listViewModel.moveItem)
             
         }
         .listStyle(PlainListStyle())
@@ -29,11 +32,13 @@ struct ListView: View {
             trailing: NavigationLink("Add",destination: AddView()) )
     }
     
+    
 }
 
 #Preview {
     NavigationStack{
         ListView()
     }
+    .environment(ListViewModel())
 }
 
