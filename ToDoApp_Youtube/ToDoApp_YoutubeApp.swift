@@ -11,7 +11,9 @@ import SwiftUI
 struct ToDoApp_YoutubeApp: App {
     var body: some Scene {
         WindowGroup {
-            ListView()
+            NavigationStack{
+                ListView()
+            }
         }
     }
 }
